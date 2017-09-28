@@ -6,24 +6,19 @@
 package edu.wctc.distjava.bookwebapp1.model;
 
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-
+import java.sql.*;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 /**
  *
  * @author alexsmith
  */
-public class MySqlDataAccess implements DataAccess {
+public class MSsqlServerDataAccess1 implements DataAccess {
     private final int ALL_RECORDS = 0;
     private Connection conn;
     private Statement stmt;
@@ -34,7 +29,7 @@ public class MySqlDataAccess implements DataAccess {
     private String password;
     
     
-    public MySqlDataAccess(String driverClass, String url,
+    public MSsqlServerDataAccess1(String driverClass, String url,
             String userName, String password){
         setDriverClass(driverClass);
         setUrl(url);
@@ -42,47 +37,58 @@ public class MySqlDataAccess implements DataAccess {
         setPassword(password);
     }
 
+    @Override
     public String getDriverClass() {
         return driverClass;
     }
 
+    @Override
     public final void setDriverClass(String driverClass) {
         this.driverClass = driverClass;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }
 
+    @Override
     public final void setUrl(String url) {
         this.url = url;
     }
 
+    @Override
     public String getUserName() {
         return userName;
     }
 
+    @Override
     public final void setUserName(String userName) {
         this.userName = userName;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
+    @Override
     public final void setPassword(String password) {
         this.password = password;
     }
     
     
     
+    @Override
     public void openConnection() throws ClassNotFoundException, SQLException {
 
         Class.forName(driverClass);
         //I don't know why i'm required to cast to a Connection object below
         conn =  DriverManager.getConnection(url, userName, password);
+        
     }
 
+    @Override
     public void closeConnection() throws SQLException {
         if (conn != null) {
             conn.close();
@@ -97,6 +103,7 @@ public class MySqlDataAccess implements DataAccess {
      * @return
      * @throws SQLException 
      */
+    @Override
     public List<Map<String,Object>> getAllRecords(String tableName, int maxRecords) 
             throws SQLException, ClassNotFoundException{
         //using a vector for thread safety
@@ -104,7 +111,7 @@ public class MySqlDataAccess implements DataAccess {
         String sql = "";
         
         if(maxRecords > ALL_RECORDS){
-            sql = "SELECT * FROM" + tableName + " limit " + maxRecords;
+            sql = "SELECT TOP " + maxRecords + " * FROM" + tableName; 
         } else {
             sql = "select * from " + tableName;
         }
@@ -128,7 +135,7 @@ public class MySqlDataAccess implements DataAccess {
     }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        MySqlDataAccess db = new MySqlDataAccess(
+        MSsqlServerDataAccess1 db = new MSsqlServerDataAccess1(
                 "org.apache.derby.jdbc.ClientDriver",
                 "jdbc:derby://localhost:1527/sample",
                 "app","app"
