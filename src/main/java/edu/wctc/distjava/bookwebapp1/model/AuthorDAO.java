@@ -6,6 +6,7 @@
 package edu.wctc.distjava.bookwebapp1.model;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,13 +71,24 @@ public class AuthorDAO {
         Author author = null;
 
         for (Map<String, Object> rec : rawData) {
+
             author = new Author();
-            Set<String> keys = rec.keySet();
-            for(String key : keys){
-                author.setAuthorId(Integer.parseInt(key));
-            }
+            Object objRecId = rec.get("author_id");
+            Integer recId = objRecId == null ? 0 : Integer.parseInt(objRecId.toString());
+            author.setAuthorId(recId);
+
+            Object objName = rec.get("author_name");
+            String authorName = objName == null ? "" : objName.toString();
+            author.setAuthorName(authorName);
+
+            Object objDate = rec.get("date_added");
+            Date objdate = objDate == null ? null : (Date) objDate;
+            author.setDateAdded(objdate);
+
+            list.add(author);
 
         }
+
         return list;
     }
 
