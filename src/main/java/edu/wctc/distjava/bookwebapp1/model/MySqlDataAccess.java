@@ -129,12 +129,12 @@ public class MySqlDataAccess implements DataAccess {
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySqlDataAccess db = new MySqlDataAccess(
-                "org.apache.derby.jdbc.ClientDriver",
-                "jdbc:derby://localhost:1527/sample",
-                "app","app"
+                "com.mysql.jdbc.Driver",
+                "jdbc:msql://localhost:3306/book",
+                "root","admin"
         );
         
-        List<Map<String,Object>> list = db.getAllRecords("Customer", 0);
+        List<Map<String,Object>> list = db.getAllRecords("author", 0);
         
         for(Map<String,Object> rec : list){
             System.out.println(rec);

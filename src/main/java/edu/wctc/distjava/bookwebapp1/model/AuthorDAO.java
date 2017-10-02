@@ -16,7 +16,7 @@ import java.util.Vector;
  *
  * @author alexsmith
  */
-public class AuthorDAO {
+public class AuthorDAO implements IAuthorDAO {
     private String driverClass;
     private String url;
     private String userName;
@@ -63,6 +63,7 @@ public class AuthorDAO {
         this.password = password;
     }
 
+    @Override
     public List<Author> getListOfAuthors() throws SQLException, ClassNotFoundException {
         List<Author> list = new Vector<>();
         List<Map<String, Object>> rawData
@@ -91,5 +92,23 @@ public class AuthorDAO {
 
         return list;
     }
+    
+//    public static void main(String[] args) {
+//         AuthorDAO dao = new AuthorDAO(
+//                "com.mysql.jdbc.Driver",
+//                "jdbc:msql://localhost:3306/book",
+//                "root","admin",
+//                 new MySqlDataAccess(
+//                "com.mysql.jdbc.Driver",
+//                "jdbc:msql://localhost:3306/book",
+//                "root","admin");
+//                 
+//               
+//                 
+//        );
+    
+    
+//    }
+  
 
 }
