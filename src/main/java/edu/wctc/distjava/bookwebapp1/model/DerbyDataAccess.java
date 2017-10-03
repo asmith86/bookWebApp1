@@ -18,7 +18,7 @@ import java.util.Vector;
  *
  * @author alexsmith
  */
-public class MSsqlServerDataAccess1 implements DataAccess {
+public class DerbyDataAccess implements DataAccess {
     private final int ALL_RECORDS = 0;
     private Connection conn;
     private Statement stmt;
@@ -29,7 +29,7 @@ public class MSsqlServerDataAccess1 implements DataAccess {
     private String password;
     
     
-    public MSsqlServerDataAccess1(String driverClass, String url,
+    public DerbyDataAccess(String driverClass, String url,
             String userName, String password){
         setDriverClass(driverClass);
         setUrl(url);
@@ -83,7 +83,7 @@ public class MSsqlServerDataAccess1 implements DataAccess {
     public void openConnection() throws ClassNotFoundException, SQLException {
 
         Class.forName(driverClass);
-        //I don't know why i'm required to cast to a Connection object below
+     
         conn =  DriverManager.getConnection(url, userName, password);
         
     }
@@ -135,7 +135,7 @@ public class MSsqlServerDataAccess1 implements DataAccess {
     }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        MSsqlServerDataAccess1 db = new MSsqlServerDataAccess1(
+        DerbyDataAccess db = new DerbyDataAccess(
                 "org.apache.derby.jdbc.ClientDriver",
                 "jdbc:derby://localhost:1527/sample",
                 "app","app"
@@ -146,6 +146,11 @@ public class MSsqlServerDataAccess1 implements DataAccess {
         for(Map<String,Object> rec : list){
             System.out.println(rec);
         }
+    }
+
+    @Override
+    public void deleteRecordbyId(String tableName, String colName, int id) throws SQLException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

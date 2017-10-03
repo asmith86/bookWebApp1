@@ -25,6 +25,8 @@ public interface DataAccess {
      * @throws SQLException
      */
     List<Map<String, Object>> getAllRecords(String tableName, int maxRecords) throws SQLException, ClassNotFoundException;
+    
+    void deleteRecordbyId(String tableName, String colName, int id) throws SQLException, ClassNotFoundException;
 
     String getDriverClass();
 

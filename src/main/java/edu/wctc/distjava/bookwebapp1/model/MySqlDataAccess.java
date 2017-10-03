@@ -79,7 +79,7 @@ public class MySqlDataAccess implements DataAccess {
     public void openConnection() throws ClassNotFoundException, SQLException {
 
         Class.forName(driverClass);
-        //I don't know why i'm required to cast to a Connection object below
+        //cannot connect! complains of no suitable driver
         conn =  DriverManager.getConnection(url, userName, password);
     }
 
@@ -126,6 +126,16 @@ public class MySqlDataAccess implements DataAccess {
         closeConnection();
         return rawData;
     }
+   
+    @Override
+    public void deleteRecordbyId(String tableName, String colName, int id) throws ClassNotFoundException, SQLException{
+        String sql = "DELETE * FROM " + tableName + 
+                "WHERE " + colName + "= " + id;
+        openConnection();
+        stmt = conn.createStatement();
+        stmt.executeQuery(sql);
+        
+    }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySqlDataAccess db = new MySqlDataAccess(
@@ -139,6 +149,8 @@ public class MySqlDataAccess implements DataAccess {
         for(Map<String,Object> rec : list){
             System.out.println(rec);
         }
+        
+        db.deleteRecordbyId("author", "author_id", 1);
     }
 
 

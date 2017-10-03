@@ -17,6 +17,7 @@ import java.util.Vector;
  * @author alexsmith
  */
 public class AuthorDAO implements IAuthorDAO {
+     
     private String driverClass;
     private String url;
     private String userName;
@@ -93,22 +94,31 @@ public class AuthorDAO implements IAuthorDAO {
         return list;
     }
     
-//    public static void main(String[] args) {
-//         AuthorDAO dao = new AuthorDAO(
-//                "com.mysql.jdbc.Driver",
-//                "jdbc:msql://localhost:3306/book",
-//                "root","admin",
-//                 new MySqlDataAccess(
-//                "com.mysql.jdbc.Driver",
-//                "jdbc:msql://localhost:3306/book",
-//                "root","admin");
-//                 
-//               
-//                 
-//        );
+    @Override
+    public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException{
+        db.deleteRecordbyId("author", colName, id);
+        
+    }
     
-    
-//    }
-  
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        AuthorDAO dao = new AuthorDAO(
+                "com.mysql.jdbc.Driver",
+                "jdbc:msql://localhost:3306/book",
+                "root", "admin",
+                new MySqlDataAccess(
+                        "com.mysql.jdbc.Driver",
+                        "jdbc:msql://localhost:3306/book",
+                        "root", "admin"
+                )
+        );
+        
+        List<Author> list = dao.getListOfAuthors();
+        for(Author a : list){
+            System.out.println(a.getAuthorId() + ", " + a.getAuthorName() 
+                    + ", " + a.getDateAdded() + "\n");
+        }
+        
+        dao.deleteAuthorRecord("author_id", 1);
+    }
 
 }

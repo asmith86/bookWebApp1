@@ -27,21 +27,31 @@ public class MockAuthorDAO implements IAuthorDAO {
 
     @Override
     public List<Author> getListOfAuthors() throws SQLException, ClassNotFoundException {
-        List<Author> list = new Vector<>();
-        List<Map<String, Object>> rawData
-                = db.getAllRecords("author", 0);
+       List<Author> list = null;
 
-        Author author = null;
-
-        for (Map<String, Object> rec : rawData) {
-            list = Arrays.asList(new Author(1,"john doe", new Date()));
+            list = Arrays.asList(new Author(1,"john doe", new Date()),
+                    new Author(2, "Bob Smith", new Date())
+            
+            );
 
        
-        }
+        
 
         return list;
     }
     
- 
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        MockAuthorDAO dao = new MockAuthorDAO();
+        List<Author> list = dao.getListOfAuthors();
+        for(Author a : list){
+            System.out.println(a.getAuthorId() + ", " + a.getAuthorName() 
+                    + ", " + a.getDateAdded() + "\n");
+        }
+    }
+
+    @Override
+    public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

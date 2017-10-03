@@ -24,13 +24,16 @@ public class AuthorService {
     }
 
     public AuthorService() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         
     }
     
     public List<Author> getAuthorList() throws SQLException, ClassNotFoundException {
         return authorDao.getListOfAuthors();
+
+    }
     
-        
+    public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException{
+        authorDao.deleteAuthorRecord(colName, id);
     }
 
     public IAuthorDAO getAuthorDao() {
@@ -41,8 +44,29 @@ public class AuthorService {
         this.authorDao = authorDao;
     }
     
-    public static void main(String[] args) {
-        //test code here
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        IAuthorDAO dao = new AuthorDAO(
+                "com.mysql.jdbc.Driver",
+                "jdbc:msql://localhost:3306/book",
+                "root", "admin",
+                new MySqlDataAccess(
+                        "com.mysql.jdbc.Driver",
+                        "jdbc:msql://localhost:3306/book",
+                        "root", "admin"
+                )
+        );
+        AuthorService authorService = 
+                new AuthorService(dao);
+        
+        List<Author> list = authorService.getAuthorList();
+        
+        for(Author a : list){
+            System.out.println(a.getAuthorId() + ", " + a.getAuthorName() 
+                    + ", " + a.getDateAdded() + "\n");
+        }
+        
+       authorService.deleteAuthorRecord("author_id", 1);
+        
     }
     
 }
