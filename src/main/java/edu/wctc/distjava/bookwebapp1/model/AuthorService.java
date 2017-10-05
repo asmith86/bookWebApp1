@@ -65,7 +65,7 @@ public class AuthorService {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-       authorService.deleteAuthorRecord("author_id", 1);
+       //authorService.deleteAuthorRecord("author_id", 1);
         
     }
     

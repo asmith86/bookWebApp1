@@ -30,7 +30,18 @@ public class AuthorDAO implements IAuthorDAO {
         setUrl(url);
         setUserName(userName);
         setPassword(password);
+        setDb(db);
     }
+
+    public DataAccess getDb() {
+        return db;
+    }
+
+    public void setDb(DataAccess db) {
+        this.db = db;
+    }
+    
+    
 
     public String getDriverClass() {
         return driverClass;
@@ -103,7 +114,7 @@ public class AuthorDAO implements IAuthorDAO {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AuthorDAO dao = new AuthorDAO(
                 "com.mysql.jdbc.Driver",
-                "jdbc:msql://localhost:3306/book",
+                "jdbc:mysql://localhost:3306/book",
                 "root", "admin",
                 new MySqlDataAccess(
                         "com.mysql.jdbc.Driver",
@@ -118,7 +129,7 @@ public class AuthorDAO implements IAuthorDAO {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-        dao.deleteAuthorRecord("author_id", 1);
+        //dao.deleteAuthorRecord("author_id", 1);
     }
 
 }
