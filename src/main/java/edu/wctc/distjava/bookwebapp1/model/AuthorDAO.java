@@ -105,10 +105,13 @@ public class AuthorDAO implements IAuthorDAO {
         return list;
     }
     
-    @Override
-    public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException{
-        db.deleteRecordbyId("author", colName, id);
-        
+   
+    
+     @Override
+    public int deleteAuthorRecordById(String keyCol, Object keyValue) throws SQLException, ClassNotFoundException {
+        int recsDeleted = db.deleteRecordById("author", keyCol, keyValue);
+
+        return recsDeleted;
     }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -129,7 +132,9 @@ public class AuthorDAO implements IAuthorDAO {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-        //dao.deleteAuthorRecord("author_id", 1);
+       
     }
+
+   
 
 }

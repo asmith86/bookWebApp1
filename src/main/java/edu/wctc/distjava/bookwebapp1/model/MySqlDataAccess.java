@@ -131,13 +131,25 @@ public class MySqlDataAccess implements DataAccess {
         return rawData;
     }
    
+ 
+    
     @Override
-    public void deleteRecordbyId(String tableName, String colName, int id) throws ClassNotFoundException, SQLException{
-        String sql = "DELETE * FROM " + tableName + 
-                "WHERE " + colName + "= " + id;
+    public int deleteRecordById(String tableName, String keyCol, Object keyValue) throws ClassNotFoundException, SQLException{
+        String sql = "delete * from " + tableName + " where " +
+                    keyCol + "= ";
+        
+        if(keyValue instanceof String){
+            
+            sql += "'" + keyValue.toString() + "'";
+        } else if(keyValue instanceof Long){
+            sql += Long.parseLong(keyValue.toString());
+        }
         openConnection();
         stmt = conn.createStatement();
-        stmt.executeQuery(sql);
+        int recsDeleted = stmt.executeUpdate(sql);
+        closeConnection();
+        
+        return recsDeleted;
         
     }
     

@@ -33,8 +33,10 @@ public class AuthorService {
     }
     
     public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException{
-        authorDao.deleteAuthorRecord(colName, id);
+        authorDao.deleteAuthorRecordById(colName, id);
     }
+    
+    
 
     public IAuthorDAO getAuthorDao() {
         return authorDao;
@@ -65,7 +67,7 @@ public class AuthorService {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-       //authorService.deleteAuthorRecord("author_id", 1);
+       
         
     }
     

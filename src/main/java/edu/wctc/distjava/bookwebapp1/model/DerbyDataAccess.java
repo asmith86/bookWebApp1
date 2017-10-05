@@ -148,8 +148,10 @@ public class DerbyDataAccess implements DataAccess {
         }
     }
 
+    
+
     @Override
-    public void deleteRecordbyId(String tableName, String colName, int id) throws SQLException, ClassNotFoundException {
+    public int deleteRecordById(String tableName, String keyCol, Object keyValue) throws SQLException, ClassNotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

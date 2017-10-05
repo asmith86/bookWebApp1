@@ -15,6 +15,10 @@ import java.util.List;
 public interface IAuthorDAO {
 
     List<Author> getListOfAuthors() throws SQLException, ClassNotFoundException;
-    void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException;
+    
+    
+    int deleteAuthorRecordById(String keyCol, Object keyValue) throws SQLException, ClassNotFoundException;
+    
+    
     
 }

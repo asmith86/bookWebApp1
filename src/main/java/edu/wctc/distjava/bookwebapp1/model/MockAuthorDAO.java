@@ -49,8 +49,12 @@ public class MockAuthorDAO implements IAuthorDAO {
         }
     }
 
+   
+
+   
+
     @Override
-    public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException {
+    public int deleteAuthorRecordById(String keyCol, Object keyValue) throws SQLException, ClassNotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
