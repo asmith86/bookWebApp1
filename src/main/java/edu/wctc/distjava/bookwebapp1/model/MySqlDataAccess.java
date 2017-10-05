@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -27,6 +28,7 @@ public class MySqlDataAccess implements DataAccess {
     private final int ALL_RECORDS = 0;
     private Connection conn;
     private Statement stmt;
+    private PreparedStatement psmt;
     private ResultSet rs;
     private String driverClass;
     private String url;
@@ -153,6 +155,8 @@ public class MySqlDataAccess implements DataAccess {
         
     }
     
+    
+    
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySqlDataAccess db = new MySqlDataAccess(
                 "com.mysql.jdbc.Driver",
@@ -165,7 +169,7 @@ public class MySqlDataAccess implements DataAccess {
         for(Map<String,Object> rec : list){
             System.out.println(rec);
         }
-        
+        db.deleteRecordById("author", "author_id", 1);
       //  db.deleteRecordbyId("author", "author_id", 1);
     }
 

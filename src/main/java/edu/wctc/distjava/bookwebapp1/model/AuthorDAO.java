@@ -132,7 +132,7 @@ public class AuthorDAO implements IAuthorDAO {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-       
+       dao.deleteAuthorRecordById("author_id", 1);
     }
 
    

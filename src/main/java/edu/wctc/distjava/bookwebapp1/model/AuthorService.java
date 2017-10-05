@@ -67,7 +67,7 @@ public class AuthorService {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-       
+       dao.deleteAuthorRecordById("author_id", 1);
         
     }
     
