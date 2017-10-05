@@ -107,7 +107,7 @@ public class AuthorDAO implements IAuthorDAO {
                 "root", "admin",
                 new MySqlDataAccess(
                         "com.mysql.jdbc.Driver",
-                        "jdbc:msql://localhost:3306/book",
+                        "jdbc:mysql://localhost:3306/book",
                         "root", "admin"
                 )
         );

@@ -51,7 +51,7 @@ public class AuthorService {
                 "root", "admin",
                 new MySqlDataAccess(
                         "com.mysql.jdbc.Driver",
-                        "jdbc:msql://localhost:3306/book",
+                        "jdbc:mysql://localhost:3306/book",
                         "root", "admin"
                 )
         );

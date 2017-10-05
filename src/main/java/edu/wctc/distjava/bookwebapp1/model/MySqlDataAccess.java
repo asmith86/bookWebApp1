@@ -81,6 +81,10 @@ public class MySqlDataAccess implements DataAccess {
         Class.forName(driverClass);
         //cannot connect! complains of no suitable driver
         conn =  DriverManager.getConnection(url, userName, password);
+       
+       //using this as a temporary solution because for some reason I don't get data
+       //when I pass the values in
+      // conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/book", "root", "admin");
     }
 
     public void closeConnection() throws SQLException {
@@ -140,7 +144,7 @@ public class MySqlDataAccess implements DataAccess {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySqlDataAccess db = new MySqlDataAccess(
                 "com.mysql.jdbc.Driver",
-                "jdbc:msql://localhost:3306/book",
+                "jdbc:mysql://localhost:3306/book",
                 "root","admin"
         );
         
@@ -150,7 +154,7 @@ public class MySqlDataAccess implements DataAccess {
             System.out.println(rec);
         }
         
-        db.deleteRecordbyId("author", "author_id", 1);
+      //  db.deleteRecordbyId("author", "author_id", 1);
     }
 
 
