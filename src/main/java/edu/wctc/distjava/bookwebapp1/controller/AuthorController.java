@@ -46,13 +46,11 @@ public class AuthorController extends HttpServlet {
             String action = request.getParameter(ACTION);
             IAuthorDAO dao = new AuthorDAO(
                     "com.mysql.jdbc.Driver",
-                    "jdbc:msql://localhost:3306/book",
+                    "jdbc:mysql://localhost:3306/book",
                     "root", "admin",
-                    new MySqlDataAccess(
-                            "com.mysql.jdbc.Driver",
-                            "jdbc:msql://localhost:3306/book",
-                            "root", "admin"
-                    )
+                    new MySqlDataAccess()
+                          
+                    
             );
             AuthorService authorService
                     = new AuthorService(dao);

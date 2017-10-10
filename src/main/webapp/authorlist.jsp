@@ -26,5 +26,7 @@
                 <p>${a.authorName}</p>
             </c:forEach>
         </table>
+        <br>
+        <p>${errMessage}</p>
     </body>
 </html>

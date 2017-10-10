@@ -19,74 +19,38 @@ import java.util.Vector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.StringJoiner;
 
 /**
  *
  * @author alexsmith
  */
 public class MySqlDataAccess implements DataAccess {
+    private boolean DEBUG = true;
     private final int ALL_RECORDS = 0;
     private Connection conn;
     private Statement stmt;
-    private PreparedStatement psmt;
+    private PreparedStatement pstmt;
     private ResultSet rs;
-    private String driverClass;
-    private String url;
-    private String userName;
-    private String password;
-    
-    
-    public MySqlDataAccess(String driverClass, String url,
-            String userName, String password){
-        setDriverClass(driverClass);
-        setUrl(url);
-        setUserName(userName);
-        setPassword(password);
+//   
+    public MySqlDataAccess(){
+        
     }
 
-    public String getDriverClass() {
-        return driverClass;
-    }
 
-    public final void setDriverClass(String driverClass) {
-        this.driverClass = driverClass;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public final void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public final void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public final void setPassword(String password) {
-        this.password = password;
-    }
     
     
     
-    public void openConnection() throws ClassNotFoundException, SQLException {
+    public void openConnection(String driverClass, String url,
+            String userName, String password) throws ClassNotFoundException, SQLException {
 
         Class.forName(driverClass);
-        //cannot connect! complains of no suitable driver
+        
         conn =  DriverManager.getConnection(url, userName, password);
        
-       //using this as a temporary solution because for some reason I don't get data
-       //when I pass the values in
-      // conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/book", "root", "admin");
+       
     }
 
     public void closeConnection() throws SQLException {
@@ -103,6 +67,7 @@ public class MySqlDataAccess implements DataAccess {
      * @return
      * @throws SQLException 
      */
+    @Override
     public List<Map<String,Object>> getAllRecords(String tableName, int maxRecords) 
             throws SQLException, ClassNotFoundException{
         //using a vector for thread safety
@@ -115,7 +80,7 @@ public class MySqlDataAccess implements DataAccess {
             sql = "select * from " + tableName;
         }
         
-        openConnection();
+      
         stmt = conn.createStatement();
         rs = stmt.executeQuery(sql);
         
@@ -129,13 +94,14 @@ public class MySqlDataAccess implements DataAccess {
             }
             rawData.add(record);
         }
-        closeConnection();
+       // closeConnection();
         return rawData;
     }
    
  
     
     @Override
+    //use prepared statements in this class!
     public int deleteRecordById(String tableName, String keyCol, Object keyValue) throws ClassNotFoundException, SQLException{
         String sql = "delete * from " + tableName + " where " +
                     keyCol + "= ";
@@ -146,31 +112,129 @@ public class MySqlDataAccess implements DataAccess {
         } else if(keyValue instanceof Long){
             sql += Long.parseLong(keyValue.toString());
         }
-        openConnection();
+      
         stmt = conn.createStatement();
         int recsDeleted = stmt.executeUpdate(sql);
-        closeConnection();
+       
         
         return recsDeleted;
         
     }
     
+    @Override
+    public int createRecord(String tableName, List<String> colNames, List<Object> colValues) 
+    throws SQLException{
+        String sql = "INSERT INTO " + tableName + " ";
+        StringJoiner sj = new StringJoiner(", ", "(", ")");
+        
+        for(String col: colNames){
+            sj.add(col);
+        }
+        
+        
+        
+        sql += sj.toString();
+        sql += " VALUES ";
+        
+        
+        
+        sj = new StringJoiner(", ", "(", ")"); // delimeter, prefix, suffix
+        for(Object value : colValues){
+            sj.add("?");
+        }
+        
+        
+        
+        sql += sj.toString();
+        
+        if(DEBUG){
+            System.out.println(sql);
+        }
+        pstmt = conn.prepareStatement(sql);
+        for(int i=1; i <= colValues.size(); i++){
+            pstmt.setObject(i, colValues.get(i-1));
+            
+            
+        }
+        return pstmt.executeUpdate();
+    }
+    
+    public int testUpdateRecord(String tableName, List<String> colNames, 
+            List<Object> colValues, String whereCol, String operator,
+            Object whereVal) throws SQLException{
+        
+        String sql ="UPDATE " + tableName + " SET ";
+        StringJoiner sj = new StringJoiner(", ");
+        
+        for(String col : colNames){
+            sj.add(col + " = " + "?");
+        }
+        
+        sql += sj.toString();
+        
+        sql += " WHERE " + whereCol + " " + operator + " ?";
+        
+        if(DEBUG){
+            System.out.println(sql);
+        }
+        
+        pstmt = conn.prepareStatement(sql);
+        
+        for(int i = 1; i <= colValues.size(); i++){
+            pstmt.setObject(i, colValues.get(i - 1));
+        }
+        
+        pstmt.setObject(colValues.size() + 1, whereVal); //value after colValues is the conditional
+        
+        
+        
+        return pstmt.executeUpdate();
+    }
     
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        MySqlDataAccess db = new MySqlDataAccess(
-                "com.mysql.jdbc.Driver",
+        MySqlDataAccess db = new MySqlDataAccess();
+        
+       
+        
+        db.openConnection("com.mysql.jdbc.Driver",
                 "jdbc:mysql://localhost:3306/book",
-                "root","admin"
-        );
+                "root", "admin");
         
-        List<Map<String,Object>> list = db.getAllRecords("author", 0);
+        db.testUpdateRecord("author", 
+                Arrays.asList("author_name", "date_added"), 
+                Arrays.asList("Bob Jones", "2010-02-11"), 
+                "author_id", "=", "1");
         
-        for(Map<String,Object> rec : list){
-            System.out.println(rec);
-        }
-        db.deleteRecordById("author", "author_id", 1);
-      //  db.deleteRecordbyId("author", "author_id", 1);
+        db.closeConnection();
+        
+//        List test = Arrays.asList("one", "two", "three", "four", "five");
+//        
+//        for(int i = 1; i<=test.size(); i++){
+//            System.out.println(test.get(i - 1));
+//        }
+//        System.out.println(test.size());
+        
+        
+        
+        
+
+        
+    
+//        db.createRecord("author", 
+//                Arrays.asList("author_name", "date_added"),
+//                Arrays.asList("Bob Jones", "2010-02-11" ));
+//        
+//
+//             
+//        
+//        List<Map<String,Object>> list = db.getAllRecords("author", 0);
+//        
+//        for(Map<String,Object> rec : list){
+//            System.out.println(rec);
+//        }
+//        db.deleteRecordById("author", "author_id", 1);
+       
     }
 
 

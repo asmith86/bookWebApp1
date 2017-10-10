@@ -32,6 +32,16 @@ public class AuthorDAO implements IAuthorDAO {
         setPassword(password);
         setDb(db);
     }
+    
+    public int addAuthor(Author author){
+        return 0;
+    }
+    
+    public int addAuthor(List<String> colName, List<Object> colValues){
+        return 0;
+    }
+    
+    
 
     public DataAccess getDb() {
         return db;
@@ -77,6 +87,7 @@ public class AuthorDAO implements IAuthorDAO {
 
     @Override
     public List<Author> getListOfAuthors() throws SQLException, ClassNotFoundException {
+        db.openConnection(driverClass, url, userName, password);
         List<Author> list = new Vector<>();
         List<Map<String, Object>> rawData
                 = db.getAllRecords("author", 0);
@@ -101,6 +112,7 @@ public class AuthorDAO implements IAuthorDAO {
             list.add(author);
 
         }
+        db.closeConnection();
 
         return list;
     }
@@ -109,7 +121,9 @@ public class AuthorDAO implements IAuthorDAO {
     
      @Override
     public int deleteAuthorRecordById(String keyCol, Object keyValue) throws SQLException, ClassNotFoundException {
+        db.openConnection(driverClass, url, userName, password);
         int recsDeleted = db.deleteRecordById("author", keyCol, keyValue);
+        db.closeConnection();
 
         return recsDeleted;
     }
@@ -119,11 +133,8 @@ public class AuthorDAO implements IAuthorDAO {
                 "com.mysql.jdbc.Driver",
                 "jdbc:mysql://localhost:3306/book",
                 "root", "admin",
-                new MySqlDataAccess(
-                        "com.mysql.jdbc.Driver",
-                        "jdbc:mysql://localhost:3306/book",
-                        "root", "admin"
-                )
+                new MySqlDataAccess()
+                     
         );
         
         List<Author> list = dao.getListOfAuthors();

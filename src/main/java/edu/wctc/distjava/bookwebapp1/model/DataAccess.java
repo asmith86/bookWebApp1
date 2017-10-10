@@ -28,23 +28,18 @@ public interface DataAccess {
     
     
     int deleteRecordById(String tableName, String keyCol, Object keyValue) throws SQLException, ClassNotFoundException;
+    
+    int createRecord(String tableName, List<String> colNames, List<Object> colValues) throws SQLException;
+  
 
-    String getDriverClass();
+  //  void openConnection() throws ClassNotFoundException, SQLException;
+     void openConnection(String driverClass, String url, String userName, String password)
+             throws ClassNotFoundException, SQLException;
+     
+     
 
-    String getPassword();
-
-    String getUrl();
-
-    String getUserName();
-
-    void openConnection() throws ClassNotFoundException, SQLException;
-
-    void setDriverClass(String driverClass);
-
-    void setPassword(String password);
-
-    void setUrl(String url);
-
-    void setUserName(String userName);
+   
+    
+    //make all these public abstract
     
 }
