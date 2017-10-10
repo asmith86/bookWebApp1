@@ -19,6 +19,7 @@ public interface IAuthorDAO {
     
     int deleteAuthorRecordById(String keyCol, Object keyValue) throws SQLException, ClassNotFoundException;
     
-    
+    int testUpdateAuthorRecord(List<String> colNames, List<Object> colValues,
+            String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException;
     
 }

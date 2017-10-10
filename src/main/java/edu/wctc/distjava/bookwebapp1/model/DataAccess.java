@@ -30,6 +30,10 @@ public interface DataAccess {
     int deleteRecordById(String tableName, String keyCol, Object keyValue) throws SQLException, ClassNotFoundException;
     
     int createRecord(String tableName, List<String> colNames, List<Object> colValues) throws SQLException;
+    
+    int testUpdateRecord(String tableName, List<String> colNames, 
+            List<Object> colValues, String whereCol, String operator,
+            Object whereVal) throws SQLException;
   
 
   //  void openConnection() throws ClassNotFoundException, SQLException;

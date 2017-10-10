@@ -58,4 +58,9 @@ public class MockAuthorDAO implements IAuthorDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public int testUpdateAuthorRecord(List<String> colNames, List<Object> colValues, String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

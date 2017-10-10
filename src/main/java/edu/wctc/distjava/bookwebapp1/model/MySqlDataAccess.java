@@ -159,6 +159,7 @@ public class MySqlDataAccess implements DataAccess {
         return pstmt.executeUpdate();
     }
     
+    @Override
     public int testUpdateRecord(String tableName, List<String> colNames, 
             List<Object> colValues, String whereCol, String operator,
             Object whereVal) throws SQLException{

@@ -128,6 +128,18 @@ public class AuthorDAO implements IAuthorDAO {
         return recsDeleted;
     }
     
+    @Override
+    public int testUpdateAuthorRecord(List<String> colNames, List<Object> colValues,
+            String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException{
+        
+        db.openConnection(driverClass, url, userName, password);
+        int recsUpdated = db.testUpdateRecord("author", colNames, colValues, whereCol, operator, whereVal);
+        db.closeConnection();
+        
+        return recsUpdated;
+        
+    }
+    
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         AuthorDAO dao = new AuthorDAO(
                 "com.mysql.jdbc.Driver",
@@ -143,7 +155,7 @@ public class AuthorDAO implements IAuthorDAO {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-       dao.deleteAuthorRecordById("author_id", 1);
+      // dao.deleteAuthorRecordById("author_id", 1);
     }
 
    
