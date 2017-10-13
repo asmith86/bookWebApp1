@@ -59,7 +59,7 @@ public class AuthorController extends HttpServlet {
                 authorList = authorService.getAuthorList();
                 request.setAttribute("authorList", authorList);
 
-            }
+            } //add logic for different actions
             
             
         } catch(Exception e){

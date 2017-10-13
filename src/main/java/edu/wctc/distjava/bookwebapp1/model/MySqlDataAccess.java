@@ -97,6 +97,28 @@ public class MySqlDataAccess implements DataAccess {
        // closeConnection();
         return rawData;
     }
+    
+    @Override
+    public Map getUniqueRecordById(String tableName, String keyCol, Object keyValue) 
+            throws SQLException{
+        String sql = "SELECT * FROM " + tableName + " WHERE " +
+                keyCol + " = ?";
+        
+        pstmt = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        pstmt.setObject(paramIndex, keyValue);
+        rs = pstmt.executeQuery();
+        
+        ResultSetMetaData rsmd = rs.getMetaData();
+        
+        Map<String, Object> record = new HashMap();
+        rs.next();
+        for(int i = 1; i <= rsmd.getColumnCount(); i++){
+            record.put(rsmd.getColumnName(i), rs.getObject(i));
+        }
+        
+        return record;
+    }
    
  
     
@@ -202,12 +224,20 @@ public class MySqlDataAccess implements DataAccess {
                 "jdbc:mysql://localhost:3306/book",
                 "root", "admin");
         
-        db.testUpdateRecord("author", 
-                Arrays.asList("author_name", "date_added"), 
-                Arrays.asList("Bob Jones", "2010-02-11"), 
-                "author_id", "=", "1");
+        
+        
+        Map<String, Object> map = db.getUniqueRecordById("author", "author_id", 1);
+        
+        
+        
+//        db.testUpdateRecord("author", 
+//                Arrays.asList("author_name", "date_added"), 
+//                Arrays.asList("Bob Jones", "2010-02-11"), 
+//                "author_id", "=", "1");
         
         db.closeConnection();
+        
+        System.out.println(map);
         
 //        List test = Arrays.asList("one", "two", "three", "four", "five");
 //        

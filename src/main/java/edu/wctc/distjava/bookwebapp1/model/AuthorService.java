@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -39,6 +40,12 @@ public class AuthorService {
     public void updateAuthorRecords(List<String> colNames, List<Object> colValues, 
             String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException{
         authorDao.testUpdateAuthorRecord(colNames, colValues, whereCol, operator, whereVal);
+    }
+    
+    public Author getUniqueAuthor(int id)
+    throws SQLException, ClassNotFoundException {
+        
+       return authorDao.getUniqueAuthorRecord(id);
     }
     
     

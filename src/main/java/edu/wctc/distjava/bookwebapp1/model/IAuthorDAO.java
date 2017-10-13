@@ -7,6 +7,7 @@ package edu.wctc.distjava.bookwebapp1.model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -21,5 +22,7 @@ public interface IAuthorDAO {
     
     int testUpdateAuthorRecord(List<String> colNames, List<Object> colValues,
             String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException;
+    
+    Author getUniqueAuthorRecord(Object keyValue) throws SQLException, ClassNotFoundException;
     
 }

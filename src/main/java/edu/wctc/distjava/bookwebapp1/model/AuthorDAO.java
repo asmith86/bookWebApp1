@@ -12,6 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+/*
+* Remember to document classes
+*/
+
+
 /**
  *
  * @author alexsmith
@@ -115,6 +120,26 @@ public class AuthorDAO implements IAuthorDAO {
         db.closeConnection();
 
         return list;
+    }
+    
+    public final Author getUniqueAuthorRecord(Object keyValue)
+    throws SQLException, ClassNotFoundException{
+        db.openConnection(driverClass, url, userName, password);
+        Map<String, Object> rec = db.getUniqueRecordById("author", 
+                "author_id", keyValue);
+        
+        Author author = new Author();
+        
+        Object objRecId = rec.get("author_id");
+        Integer recId = objRecId == null ? 0 : Integer.parseInt(objRecId.toString());
+        author.setAuthorId(recId);
+        
+        Object objName = rec.get("author_name");
+        String authorName = objName == null ? "" : objName.toString();
+        author.setAuthorName(authorName);
+        
+        
+        return author;
     }
     
    

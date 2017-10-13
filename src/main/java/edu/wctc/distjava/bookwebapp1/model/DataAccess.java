@@ -26,6 +26,10 @@ public interface DataAccess {
      */
     List<Map<String, Object>> getAllRecords(String tableName, int maxRecords) throws SQLException, ClassNotFoundException;
     
+    Map<String, Object> getUniqueRecordById(String tableName, String keyCol, Object keyValue)
+            throws SQLException, ClassNotFoundException;
+    
+    
     
     int deleteRecordById(String tableName, String keyCol, Object keyValue) throws SQLException, ClassNotFoundException;
     
