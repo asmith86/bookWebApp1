@@ -48,6 +48,12 @@ public class AuthorService {
        return authorDao.getUniqueAuthorRecord(id);
     }
     
+    public void addAuthorRecord(List<String> colNames, List<Object> colValues)
+            throws SQLException, ClassNotFoundException {
+        authorDao.addAuthorRecord(colNames, colValues);
+    }
+            
+    
     
 
     public IAuthorDAO getAuthorDao() {

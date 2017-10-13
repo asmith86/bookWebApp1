@@ -17,6 +17,10 @@ public interface IAuthorDAO {
 
     List<Author> getListOfAuthors() throws SQLException, ClassNotFoundException;
     
+    int addAuthorRecord(List<String> colNames, List<Object> colValues) throws SQLException, 
+            ClassNotFoundException;
+        
+    
     
     int deleteAuthorRecordById(String keyCol, Object keyValue) throws SQLException, ClassNotFoundException;
     

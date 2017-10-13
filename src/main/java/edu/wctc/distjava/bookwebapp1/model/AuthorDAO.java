@@ -142,6 +142,15 @@ public class AuthorDAO implements IAuthorDAO {
         return author;
     }
     
+    @Override
+    public int addAuthorRecord(List<String> colNames, List<Object> colValues)
+    throws SQLException, ClassNotFoundException {
+        db.openConnection(driverClass, url, userName, password);
+        int recsAdded = db.createRecord("author", colNames, colValues);
+        db.closeConnection();
+        return recsAdded;
+    }
+    
    
     
      @Override
