@@ -39,7 +39,7 @@ public class AuthorService {
     
     public void updateAuthorRecords(List<String> colNames, List<Object> colValues, 
             String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException{
-        authorDao.testUpdateAuthorRecord(colNames, colValues, whereCol, operator, whereVal);
+        authorDao.updateAuthorRecord(colNames, colValues, whereCol, operator, whereVal);
     }
     
     public Author getUniqueAuthor(int id)

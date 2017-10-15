@@ -125,18 +125,22 @@ public class MySqlDataAccess implements DataAccess {
     @Override
     //use prepared statements in this class!
     public int deleteRecordById(String tableName, String keyCol, Object keyValue) throws ClassNotFoundException, SQLException{
-        String sql = "delete * from " + tableName + " where " +
-                    keyCol + "= ";
-        
-        if(keyValue instanceof String){
-            
-            sql += "'" + keyValue.toString() + "'";
-        } else if(keyValue instanceof Long){
-            sql += Long.parseLong(keyValue.toString());
+        String sql = "DELETE FROM " + tableName + " WHERE " +
+                    keyCol + " = ?";
+       
+        if (DEBUG) {
+            System.out.println(sql);
         }
+        
+        pstmt = conn.prepareStatement(sql);
+        int paramIndex = 1;
+        pstmt.setObject(paramIndex, keyValue);
+        
+        int recsDeleted = pstmt.executeUpdate();
+        
+
       
-        stmt = conn.createStatement();
-        int recsDeleted = stmt.executeUpdate(sql);
+       
        
         
         return recsDeleted;
@@ -182,7 +186,7 @@ public class MySqlDataAccess implements DataAccess {
     }
     
     @Override
-    public int testUpdateRecord(String tableName, List<String> colNames, 
+    public int updateRecord(String tableName, List<String> colNames, 
             List<Object> colValues, String whereCol, String operator,
             Object whereVal) throws SQLException{
         
@@ -217,54 +221,25 @@ public class MySqlDataAccess implements DataAccess {
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         MySqlDataAccess db = new MySqlDataAccess();
-        
-       
-        
+
+        //delete, update, insert, retreive (both methods) works - no issues.
         db.openConnection("com.mysql.jdbc.Driver",
                 "jdbc:mysql://localhost:3306/book",
                 "root", "admin");
         
         
-        
-        Map<String, Object> map = db.getUniqueRecordById("author", "author_id", 1);
-        
-        
-        
-//        db.testUpdateRecord("author", 
-//                Arrays.asList("author_name", "date_added"), 
-//                Arrays.asList("Bob Jones", "2010-02-11"), 
-//                "author_id", "=", "1");
-        
-        db.closeConnection();
-        
-        System.out.println(map);
-        
-//        List test = Arrays.asList("one", "two", "three", "four", "five");
-//        
-//        for(int i = 1; i<=test.size(); i++){
-//            System.out.println(test.get(i - 1));
-//        }
-//        System.out.println(test.size());
-        
-        
-        
-        
 
-        
-    
-//        db.createRecord("author", 
+//        db.updateRecord("author", 
+//                Arrays.asList("author_name", "date_added"), 
+//                Arrays.asList("Thurman Thomas", "1988-02-11"), 
+//                "author_id", "=", "2");
+//        db.createRecord("author",
 //                Arrays.asList("author_name", "date_added"),
-//                Arrays.asList("Bob Jones", "2010-02-11" ));
-//        
-//
-//             
-//        
-//        List<Map<String,Object>> list = db.getAllRecords("author", 0);
-//        
-//        for(Map<String,Object> rec : list){
-//            System.out.println(rec);
-//        }
-//        db.deleteRecordById("author", "author_id", 1);
+//                Arrays.asList("Test McTest", "2012-01-01"));
+
+        //  db.deleteRecordById("author", "author_id", 3);
+        db.closeConnection();
+
        
     }
 

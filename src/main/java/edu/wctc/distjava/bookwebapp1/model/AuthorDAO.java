@@ -138,6 +138,9 @@ public class AuthorDAO implements IAuthorDAO {
         String authorName = objName == null ? "" : objName.toString();
         author.setAuthorName(authorName);
         
+        Object objDate = rec.get("date_added");
+        Date authDate = objDate == null ? null : (Date) objDate;
+        author.setDateAdded(authDate);
         
         return author;
     }
@@ -163,11 +166,11 @@ public class AuthorDAO implements IAuthorDAO {
     }
     
     @Override
-    public int testUpdateAuthorRecord(List<String> colNames, List<Object> colValues,
+    public int updateAuthorRecord(List<String> colNames, List<Object> colValues,
             String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException{
         
         db.openConnection(driverClass, url, userName, password);
-        int recsUpdated = db.testUpdateRecord("author", colNames, colValues, whereCol, operator, whereVal);
+        int recsUpdated = db.updateRecord("author", colNames, colValues, whereCol, operator, whereVal);
         db.closeConnection();
         
         return recsUpdated;
@@ -175,6 +178,7 @@ public class AuthorDAO implements IAuthorDAO {
     }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        //retrieve, delete works
         AuthorDAO dao = new AuthorDAO(
                 "com.mysql.jdbc.Driver",
                 "jdbc:mysql://localhost:3306/book",
@@ -189,7 +193,20 @@ public class AuthorDAO implements IAuthorDAO {
                     + ", " + a.getDateAdded() + "\n");
         }
         
-      // dao.deleteAuthorRecordById("author_id", 1);
+        System.out.println("");
+        
+        Author unique = dao.getUniqueAuthorRecord(2);
+        System.out.println(unique.getAuthorId() + " " + 
+                unique.getAuthorName() + " " + unique.getDateAdded());
+        
+       
+        
+       //dao.deleteAuthorRecordById("author_id", 6);
+       
+       
+       
+       
+       
     }
 
    

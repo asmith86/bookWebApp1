@@ -28,6 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthorController extends HttpServlet {
     public static final String ACTION = "action";
     public static final String LIST_ACTION = "list";
+    public static final String ADD_ACTION = "add";
+    public static final String REMOVE_ACTION = "remove";
+    public static final String FIND_ACTION = "find";
+    public static final String UPDATE_ACTION = "update";
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,7 +65,7 @@ public class AuthorController extends HttpServlet {
                 authorList = authorService.getAuthorList();
                 request.setAttribute("authorList", authorList);
 
-            } //add logic for different actions
+            }   //add logic for additional actions
             
             
         } catch(Exception e){

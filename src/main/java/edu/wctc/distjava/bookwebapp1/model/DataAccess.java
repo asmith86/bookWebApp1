@@ -35,7 +35,7 @@ public interface DataAccess {
     
     int createRecord(String tableName, List<String> colNames, List<Object> colValues) throws SQLException;
     
-    int testUpdateRecord(String tableName, List<String> colNames, 
+    int updateRecord(String tableName, List<String> colNames, 
             List<Object> colValues, String whereCol, String operator,
             Object whereVal) throws SQLException;
   
