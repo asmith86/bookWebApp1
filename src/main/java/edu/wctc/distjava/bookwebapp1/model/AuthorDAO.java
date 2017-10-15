@@ -6,6 +6,7 @@
 package edu.wctc.distjava.bookwebapp1.model;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,14 +38,14 @@ public class AuthorDAO implements IAuthorDAO {
         setPassword(password);
         setDb(db);
     }
+  
     
-    public int addAuthor(Author author){
-        return 0;
-    }
+// add method that creates an author record by taking an author.    
+//    public int addAuthor(Author author){
+//        return 0;
+//    }
     
-    public int addAuthor(List<String> colName, List<Object> colValues){
-        return 0;
-    }
+    
     
     
 
@@ -178,7 +179,7 @@ public class AuthorDAO implements IAuthorDAO {
     }
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        //retrieve, delete works
+        //retrieve, delete, update, insert works -- No issues.
         AuthorDAO dao = new AuthorDAO(
                 "com.mysql.jdbc.Driver",
                 "jdbc:mysql://localhost:3306/book",
@@ -186,18 +187,31 @@ public class AuthorDAO implements IAuthorDAO {
                 new MySqlDataAccess()
                      
         );
+        dao.addAuthorRecord(Arrays.asList("author_name", "date_added"),
+                Arrays.asList("Sara Smith", "2005-12-04"));
         
-        List<Author> list = dao.getListOfAuthors();
-        for(Author a : list){
-            System.out.println(a.getAuthorId() + ", " + a.getAuthorName() 
-                    + ", " + a.getDateAdded() + "\n");
-        }
         
-        System.out.println("");
         
-        Author unique = dao.getUniqueAuthorRecord(2);
-        System.out.println(unique.getAuthorId() + " " + 
-                unique.getAuthorName() + " " + unique.getDateAdded());
+        
+        
+//        dao.updateAuthorRecord(Arrays.asList("author_name", "date_added"), 
+//                Arrays.asList("Rick Astley", "2014-09-06"), 
+//                "author_id", "=", 1);
+        
+//        List<Author> list = dao.getListOfAuthors();
+//        for(Author a : list){
+//            System.out.println(a.getAuthorId() + ", " + a.getAuthorName() 
+//                    + ", " + a.getDateAdded() + "\n");
+//        }
+//        
+//        System.out.println("");
+//        
+//        Author unique = dao.getUniqueAuthorRecord(2);
+//        System.out.println(unique.getAuthorId() + " " + 
+//                unique.getAuthorName() + " " + unique.getDateAdded());
+
+
+
         
        
         
