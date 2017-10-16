@@ -21,7 +21,7 @@
                     <td>${a.authorId}</td>
                     <td>${a.authorName}</td>
                     <td>${a.dateAdded}</td>
-                    <td><input type="checkbox" name="authorId" value="${a.authorName}"></td>
+                    <td><input type="checkbox" name="authorId" value="${a.authorId}"></td>
                 </tr>
                 
             </c:forEach>
@@ -31,7 +31,9 @@
             <input type="submit" value="Add" name="submit">
             <input type="submit" value="Edit" name="submit">
             <input type="submit" value="Remove" name="submit">
+      
         </form>
+        <a href="authorlist.jsp?action=list">Refresh</a>
         <p>${errMessage}</p>
     </body>
 </html>

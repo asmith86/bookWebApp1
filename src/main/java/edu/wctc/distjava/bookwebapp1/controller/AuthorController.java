@@ -74,14 +74,13 @@ public class AuthorController extends HttpServlet {
                         System.out.println("Add items");
                         break;
                     case REMOVE_ACTION:
-                        System.out.println("Remove items");
                         String[] ids = request.getParameterValues("authorId");
-                        if(ids == null){
-                            System.out.println("Null values!");
-                        }
+                        String delCol = "author_id";
                         for(String s : ids){
-                            System.out.println(s);
+                            authorService.deleteAuthorRecord(delCol, Integer.parseInt(s));
+                            
                         }
+                        
                         break;
                     case UPDATE_ACTION:
                         System.out.println("Edit items");
@@ -90,7 +89,9 @@ public class AuthorController extends HttpServlet {
                         System.out.println("Hello World");
                 }
                 
-                
+                authorList = authorService.getAuthorList();
+                request.setAttribute("authorList", authorList);
+                destination = "authorlist.jsp?action=list";
                 
             }
             //add logic for additional actions
