@@ -19,14 +19,18 @@
                 <tr>
                     <td>${a.authorId}</td>
                     <td>${a.authorName}</td>
-                 
-                    <td></td>
                     <td>${a.dateAdded}</td>
+                    <td><input type="checkbox" id="author" name="${a.authorId}"></td>
                 </tr>
-                <p>${a.authorName}</p>
+                
             </c:forEach>
         </table>
         <br>
+        <form name="authorForm" id="authorForm" method="POST" action="authorController?action=addEditDelete">
+            <input type="submit" value="Add" name="submit">
+            <input type="submit" value="Edit" name="submit">
+            <input type="submit" value="Remove" name="submit">
+        </form>
         <p>${errMessage}</p>
     </body>
 </html>

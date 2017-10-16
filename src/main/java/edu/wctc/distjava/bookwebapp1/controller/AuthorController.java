@@ -28,10 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthorController extends HttpServlet {
     public static final String ACTION = "action";
     public static final String LIST_ACTION = "list";
-    public static final String ADD_ACTION = "add";
-    public static final String REMOVE_ACTION = "remove";
+    public static final String ADD_EDIT_DELETE_ACTION = "addEditDelete";
+    public static final String SUBMIT_ACTION = "submit";
+    public static final String ADD_ACTION = "Add";
+    public static final String REMOVE_ACTION = "Remove";
     public static final String FIND_ACTION = "find";
-    public static final String UPDATE_ACTION = "update";
+    public static final String UPDATE_ACTION = "Edit";
     
     
 
@@ -65,7 +67,26 @@ public class AuthorController extends HttpServlet {
                 authorList = authorService.getAuthorList();
                 request.setAttribute("authorList", authorList);
 
-            }   //add logic for additional actions
+            } else if (action.equalsIgnoreCase(ADD_EDIT_DELETE_ACTION)) {
+                String submit = request.getParameter(SUBMIT_ACTION);
+                switch(submit){
+                    case ADD_ACTION:
+                        System.out.println("Add items");
+                        break;
+                    case REMOVE_ACTION:
+                        System.out.println("Remove items");
+                        break;
+                    case UPDATE_ACTION:
+                        System.out.println("Edit items");
+                        break;
+                    default:
+                        System.out.println("Hello World");
+                }
+                
+                
+                
+            }
+            //add logic for additional actions
             
             
         } catch(Exception e){
@@ -76,6 +97,8 @@ public class AuthorController extends HttpServlet {
         RequestDispatcher view = request.getRequestDispatcher(destination);
         view.forward(request, response);
     }
+    
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
