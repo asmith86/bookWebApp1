@@ -33,7 +33,7 @@
             <input type="submit" value="Remove" name="submit">
       
         </form>
-        <a href="authorlist.jsp?action=list">Refresh</a>
+        
         <p>${errMessage}</p>
     </body>
 </html>
