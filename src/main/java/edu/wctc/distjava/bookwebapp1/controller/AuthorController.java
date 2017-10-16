@@ -75,6 +75,13 @@ public class AuthorController extends HttpServlet {
                         break;
                     case REMOVE_ACTION:
                         System.out.println("Remove items");
+                        String[] ids = request.getParameterValues("authorId");
+                        if(ids == null){
+                            System.out.println("Null values!");
+                        }
+                        for(String s : ids){
+                            System.out.println(s);
+                        }
                         break;
                     case UPDATE_ACTION:
                         System.out.println("Edit items");
