@@ -13,6 +13,8 @@ import edu.wctc.distjava.bookwebapp1.model.MySqlDataAccess;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,7 +41,7 @@ public class AuthorController extends HttpServlet {
     public static final String REMOVE_ACTION = "Remove";
     public static final String FIND_ACTION = "find";
     public static final String UPDATE_ACTION = "Edit";
-    
+
     public static final String LIST_PAGE = "/authorlist.jsp";
     public static final String ADD_EDIT_PAGE = "/editpage.jsp";
 
@@ -77,14 +79,14 @@ public class AuthorController extends HttpServlet {
                 switch (submit) {
                     case ADD_UPDATE_ACTION:
                         String[] authorIds = request.getParameterValues("authorId");
-                        if(authorIds == null){
-                          //Go to edit page  
+                        if (authorIds == null) {
+                            //Go to edit page  
                         } else {
                             //Must be an edit
                             String authorId = authorIds[0];
                             author = authorService.getUniqueAuthor(Integer.parseInt(authorId));
                             request.setAttribute("author", author);
-                            
+
                         }
                         destination = ADD_EDIT_PAGE;
                         break;
@@ -98,26 +100,36 @@ public class AuthorController extends HttpServlet {
 
                         break;
                     case SAVE_ACTION:
+
                         String authorId = request.getParameter("authorId");
                         String authorName = request.getParameter("authorName");
                         String dateAdded = request.getParameter("dateAdded");
-                        
-                        if(authorId == null || authorId.isEmpty()){
+
+                        if (authorId == null || authorId.isEmpty()) {
                             //Add logic
-                           
+                            authorService.addAuthorRecord(Arrays.asList(
+                                    "author_name", "date_added"),
+                                    Arrays.asList(
+                                            authorName, dateAdded));
+
                         } else {
-                           // Update logic
+                            // Update logic
+                            authorService.updateAuthorRecords(
+                                    Arrays.asList("author_name", "date_added"),
+                                    Arrays.asList(authorName, dateAdded),
+                                    "author_id",
+                                    "=",
+                                    authorId);
                         }
-                        
-                        
+
                         break;
-                        
+
                     case CANCEL_ACTION:
                         System.out.println("Cancel");
                         break;
-                    
+
                     default:
-                        System.out.println("Hello World");
+                        System.out.println("Debug");
                 }
 
                 this.refreshListPage(request, authorService);
