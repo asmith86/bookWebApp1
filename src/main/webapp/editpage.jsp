@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Add/Edit Authors</h1>
-        <form method="POST" action="authorController?action=submit">
+        <form method="POST" action="authorController?action=addEditDelete">
             <table>
 
                 <c:choose> <!-- Conditionally display Author ID -->
@@ -39,8 +39,8 @@
 
 
             </table> 
-                <input type="submit" value="cancel" name="action">
-                <input type="submit" value="save" name="action">
+                <input type="submit" value="cancel" name="submit">
+                <input type="submit" value="save" name="submit">
         </form>
     </body>
 </html>

@@ -32,6 +32,7 @@ public class AuthorController extends HttpServlet {
     public static final String LIST_ACTION = "list";
     public static final String ADD_EDIT_DELETE_ACTION = "addEditDelete";
     public static final String SUBMIT_ACTION = "submit";
+    public static final String SAVE_ACTION = "save";
     public static final String CANCEL_ACTION = "cancel";
     public static final String ADD_ACTION = "Add";
     public static final String ADD_UPDATE_ACTION = "addUpdate";
@@ -87,7 +88,7 @@ public class AuthorController extends HttpServlet {
                         }
                         destination = ADD_EDIT_PAGE;
                         break;
-                    case REMOVE_ACTION:
+                    case REMOVE_ACTION: //Tested works
                         String[] ids = request.getParameterValues("authorId");
                         String delCol = "author_id";
                         for (String s : ids) {
@@ -95,6 +96,24 @@ public class AuthorController extends HttpServlet {
 
                         }
 
+                        break;
+                    case SAVE_ACTION:
+                        String authorId = request.getParameter("authorId");
+                        String authorName = request.getParameter("authorName");
+                        String dateAdded = request.getParameter("dateAdded");
+                        
+                        if(authorId == null || authorId.isEmpty()){
+                            //Add logic
+                           
+                        } else {
+                           // Update logic
+                        }
+                        
+                        
+                        break;
+                        
+                    case CANCEL_ACTION:
+                        System.out.println("Cancel");
                         break;
                     
                     default:
