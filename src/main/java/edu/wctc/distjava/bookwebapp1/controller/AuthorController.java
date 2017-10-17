@@ -32,7 +32,9 @@ public class AuthorController extends HttpServlet {
     public static final String LIST_ACTION = "list";
     public static final String ADD_EDIT_DELETE_ACTION = "addEditDelete";
     public static final String SUBMIT_ACTION = "submit";
+    public static final String CANCEL_ACTION = "cancel";
     public static final String ADD_ACTION = "Add";
+    public static final String ADD_UPDATE_ACTION = "addUpdate";
     public static final String REMOVE_ACTION = "Remove";
     public static final String FIND_ACTION = "find";
     public static final String UPDATE_ACTION = "Edit";
@@ -64,6 +66,7 @@ public class AuthorController extends HttpServlet {
             AuthorService authorService
                     = new AuthorService(dao);
             List<Author> authorList = null;
+            Author author = null;
             if (action.equalsIgnoreCase(LIST_ACTION)) {
                 authorList = authorService.getAuthorList();
                 request.setAttribute("authorList", authorList);
@@ -71,8 +74,17 @@ public class AuthorController extends HttpServlet {
             } else if (action.equalsIgnoreCase(ADD_EDIT_DELETE_ACTION)) {
                 String submit = request.getParameter(SUBMIT_ACTION);
                 switch (submit) {
-                    case ADD_ACTION:
-                        System.out.println("Add items");
+                    case ADD_UPDATE_ACTION:
+                        String[] authorIds = request.getParameterValues("authorId");
+                        if(authorIds == null){
+                          //Go to edit page  
+                        } else {
+                            //Must be an edit
+                            String authorId = authorIds[0];
+                            author = authorService.getUniqueAuthor(Integer.parseInt(authorId));
+                            request.setAttribute("author", author);
+                            
+                        }
                         destination = ADD_EDIT_PAGE;
                         break;
                     case REMOVE_ACTION:
@@ -84,9 +96,7 @@ public class AuthorController extends HttpServlet {
                         }
 
                         break;
-                    case UPDATE_ACTION:
-                        System.out.println("Edit items");
-                        break;
+                    
                     default:
                         System.out.println("Hello World");
                 }
