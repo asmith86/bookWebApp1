@@ -39,6 +39,8 @@
 
 
             </table> 
+                <input type="submit" value="cancel" name="action">
+                <input type="submit" value="save" name="action">
         </form>
     </body>
 </html>

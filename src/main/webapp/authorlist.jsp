@@ -28,8 +28,8 @@
         </table>
         <br>
         
-            <input type="submit" value="Add" name="submit">
-            <input type="submit" value="Edit" name="submit">
+            <input type="submit" value="addUpdate" name="submit">
+            
             <input type="submit" value="Remove" name="submit">
       
         </form>
