@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.wctc.distjava.bookwebapp1.controller;
 
 import edu.wctc.distjava.bookwebapp1.model.Author;
@@ -29,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AuthorController", urlPatterns = {"/authorController"})
 public class AuthorController extends HttpServlet {
+    
+    
 
     public static final String ACTION = "action";
     public static final String LIST_ACTION = "list";
