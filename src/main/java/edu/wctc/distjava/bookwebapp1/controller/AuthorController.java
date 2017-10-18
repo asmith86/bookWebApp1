@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.wctc.distjava.bookwebapp1.controller;
 
 import edu.wctc.distjava.bookwebapp1.model.Author;
@@ -30,8 +29,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AuthorController", urlPatterns = {"/authorController"})
 public class AuthorController extends HttpServlet {
-    
-    
 
     public static final String ACTION = "action";
     public static final String LIST_ACTION = "list";
@@ -47,6 +44,11 @@ public class AuthorController extends HttpServlet {
 
     public static final String LIST_PAGE = "/authorlist.jsp";
     public static final String ADD_EDIT_PAGE = "/editpage.jsp";
+
+    private String driverClass;
+    private String url;
+    private String username;
+    private String password;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -64,9 +66,9 @@ public class AuthorController extends HttpServlet {
         try {
             String action = request.getParameter(ACTION);
             IAuthorDAO dao = new AuthorDAO(
-                    "com.mysql.jdbc.Driver",
-                    "jdbc:mysql://localhost:3306/book",
-                    "root", "admin",
+                    driverClass,
+                    url,
+                    username, password,
                     new MySqlDataAccess()
             );
             AuthorService authorService
@@ -154,8 +156,9 @@ public class AuthorController extends HttpServlet {
         request.setAttribute("authorList", authorList);
     }
     
-    //pre Add-Commit comment prior to creation of new branch.
+    
 
+    //pre Add-Commit comment prior to creation of new branch.
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -194,5 +197,19 @@ public class AuthorController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    
+    @Override
+    public void init() throws ServletException {
+        driverClass = getServletContext()
+                .getInitParameter("db.driver.class");
+        url = getServletContext()
+                .getInitParameter("db.url");
+        username = getServletContext()
+                .getInitParameter("db.username");
+        password = getServletContext()
+                .getInitParameter("db.password");
 
+    }
+    
 }
