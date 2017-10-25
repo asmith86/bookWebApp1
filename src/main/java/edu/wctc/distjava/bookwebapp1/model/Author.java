@@ -14,6 +14,8 @@ public class Author {
 
     public Author() {
     }
+    
+    
 
     public Author(Integer authorId) {
         this.authorId = authorId;
