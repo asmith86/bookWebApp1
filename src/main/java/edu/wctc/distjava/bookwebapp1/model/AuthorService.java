@@ -5,86 +5,79 @@
  */
 package edu.wctc.distjava.bookwebapp1.model;
 
+
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 
 /**
  *
  * @author alexsmith
  */
-public class AuthorService {
-    private IAuthorDAO authorDao;
+@Stateless
+public class AuthorService implements Serializable {
     
-    public AuthorService(IAuthorDAO authorDao){
-        setAuthorDao(authorDao);
-        
-    }
-
+    @PersistenceContext(unitName = "book_PU")
+    private EntityManager em; //dont refrence this property directly
     public AuthorService() {
          
     }
+
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
     
-    public List<Author> getAuthorList() throws SQLException, ClassNotFoundException {
-        return authorDao.getListOfAuthors();
+   
+    
+    public List<Author> getAuthorList() throws Exception {
+        
+        String jpql = "select a from Author a";
+        TypedQuery<Author> q = getEm().createQuery(jpql, Author.class);
+        q.setMaxResults(500); //optional
+        return  q.getResultList();
+        
 
     }
     
     public void deleteAuthorRecord(String colName, int id) throws SQLException, ClassNotFoundException{
-        authorDao.deleteAuthorRecordById(colName, id);
+       
     }
     
     public void updateAuthorRecords(List<String> colNames, List<Object> colValues, 
             String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException{
-        authorDao.updateAuthorRecord(colNames, colValues, whereCol, operator, whereVal);
+       
     }
     
     public Author getUniqueAuthor(int id)
     throws SQLException, ClassNotFoundException {
         
-       return authorDao.getUniqueAuthorRecord(id);
+       return null;
     }
     
     public void addAuthorRecord(List<String> colNames, List<Object> colValues)
             throws SQLException, ClassNotFoundException {
-        authorDao.addAuthorRecord(colNames, colValues);
-    }
-            
-    
-    
-
-    public IAuthorDAO getAuthorDao() {
-        return authorDao;
-    }
-
-    public void setAuthorDao(IAuthorDAO authorDao) {
-        this.authorDao = authorDao;
-    }
-    
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        IAuthorDAO dao = new AuthorDAO(
-                "com.mysql.jdbc.Driver",
-                "jdbc:msql://localhost:3306/book",
-                "root", "admin",
-                new MySqlDataAccess()
-                      
-                
-        );
-        AuthorService authorService = 
-                new AuthorService(dao);
-        
-        List<Author> list = authorService.getAuthorList();
-        
-        for(Author a : list){
-            System.out.println(a.getAuthorId() + ", " + a.getAuthorName() 
-                    + ", " + a.getDateAdded() + "\n");
-        }
-        
-       dao.deleteAuthorRecordById("author_id", 1);
         
     }
     
 }
+
+            
+    
+    
+
+    
+ 

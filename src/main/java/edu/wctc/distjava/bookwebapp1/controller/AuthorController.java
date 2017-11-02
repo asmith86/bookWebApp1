@@ -6,16 +6,16 @@
 package edu.wctc.distjava.bookwebapp1.controller;
 
 import edu.wctc.distjava.bookwebapp1.model.Author;
-import edu.wctc.distjava.bookwebapp1.model.AuthorDAO;
+
 import edu.wctc.distjava.bookwebapp1.model.AuthorService;
-import edu.wctc.distjava.bookwebapp1.model.IAuthorDAO;
-import edu.wctc.distjava.bookwebapp1.model.MySqlDataAccess;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,11 +44,11 @@ public class AuthorController extends HttpServlet {
 
     public static final String LIST_PAGE = "/authorlist.jsp";
     public static final String ADD_EDIT_PAGE = "/editpage.jsp";
+    
+    @EJB
+    private AuthorService authorService;
 
-    private String driverClass;
-    private String url;
-    private String username;
-    private String password;
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,18 +61,15 @@ public class AuthorController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         String destination = LIST_PAGE; //default
         try {
             String action = request.getParameter(ACTION);
-            IAuthorDAO dao = new AuthorDAO(
-                    driverClass,
-                    url,
-                    username, password,
-                    new MySqlDataAccess()
-            );
+            
+            
             AuthorService authorService
-                    = new AuthorService(dao);
+                    = null;
             List<Author> authorList = null;
             Author author = null;
             if (action.equalsIgnoreCase(LIST_ACTION)) {
@@ -151,12 +148,10 @@ public class AuthorController extends HttpServlet {
         view.forward(request, response);
     }
 
-    private void refreshListPage(HttpServletRequest request, AuthorService authorService) throws SQLException, ClassNotFoundException {
+    private void refreshListPage(HttpServletRequest request, AuthorService authorService) throws SQLException, ClassNotFoundException, Exception {
         List<Author> authorList = authorService.getAuthorList();
         request.setAttribute("authorList", authorList);
     }
-    
-    
 
     //pre Add-Commit comment prior to creation of new branch.
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -197,19 +192,11 @@ public class AuthorController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
+
     @Override
     public void init() throws ServletException {
-        driverClass = getServletContext()
-                .getInitParameter("db.driver.class");
-        url = getServletContext()
-                .getInitParameter("db.url");
-        username = getServletContext()
-                .getInitParameter("db.username");
-        password = getServletContext()
-                .getInitParameter("db.password");
+        
 
     }
-    
+
 }
