@@ -68,8 +68,8 @@ public class AuthorController extends HttpServlet {
             String action = request.getParameter(ACTION);
             
             
-            AuthorService authorService
-                    = null;
+//            AuthorService authorService
+//                    = null;
             List<Author> authorList = null;
             Author author = null;
             if (action.equalsIgnoreCase(LIST_ACTION)) {
@@ -86,17 +86,17 @@ public class AuthorController extends HttpServlet {
                         } else {
                             //Must be an edit
                             String authorId = authorIds[0];
-                            author = authorService.getUniqueAuthor(Integer.parseInt(authorId));
+                            author = authorService.getUniqueAuthor(authorId);
                             request.setAttribute("author", author);
 
                         }
                         destination = ADD_EDIT_PAGE;
                         break;
-                    case REMOVE_ACTION: //Tested works
+                    case REMOVE_ACTION: 
                         String[] ids = request.getParameterValues("authorId");
-                        String delCol = "author_id";
+                       
                         for (String s : ids) {
-                            authorService.deleteAuthorRecord(delCol, Integer.parseInt(s));
+                           authorService.deleteAuthorRecord(s);
 
                         }
 
@@ -108,20 +108,23 @@ public class AuthorController extends HttpServlet {
                         String dateAdded = request.getParameter("dateAdded");
 
                         if (authorId == null || authorId.isEmpty()) {
+                            authorService.addAuthorRecord(authorName,dateAdded);
                             //Add logic
-                            authorService.addAuthorRecord(Arrays.asList(
-                                    "author_name", "date_added"),
-                                    Arrays.asList(
-                                            authorName, dateAdded));
+//                            authorService.addAuthorRecord(Arrays.asList(
+//                                    "author_name", "date_added"),
+//                                    Arrays.asList(
+//                                            authorName, dateAdded));
+
 
                         } else {
+                            authorService.updateAuthorRecords(authorId, authorName, dateAdded);
                             // Update logic
-                            authorService.updateAuthorRecords(
-                                    Arrays.asList("author_name", "date_added"),
-                                    Arrays.asList(authorName, dateAdded),
-                                    "author_id",
-                                    "=",
-                                    authorId);
+//                            authorService.updateAuthorRecords(
+//                                    Arrays.asList("author_name", "date_added"),
+//                                    Arrays.asList(authorName, dateAdded),
+//                                    "author_id",
+//                                    "=",
+//                                    authorId);
                         }
 
                         break;
@@ -137,7 +140,7 @@ public class AuthorController extends HttpServlet {
                 this.refreshListPage(request, authorService);
 
             }
-            //add logic for additional actions
+            
 
         } catch (Exception e) {
             destination = LIST_PAGE;

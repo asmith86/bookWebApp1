@@ -31,6 +31,7 @@ public class Author implements Serializable {
     private Integer authorId;
     @Size(max = 45)
     
+    @Column(name = "author_name")
     private String authorName;
     @Column(name = "date_added")
     @Temporal(TemporalType.DATE)
