@@ -70,25 +70,20 @@ public class AuthorService implements Serializable {
        
     }
     
-    public void updateAuthorRecords(String name, String dateAdded) throws ParseException{
+    public void updateAuthorRecords(String id, String name, String dateAdded) throws ParseException{
         String jpql = "update Author a set a.authorName = :name, a.dateAdded = :date " + 
                 "where a.authorId = :id";
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAdded);
-       // Integer idInt = Integer.parseInt(id);
+        Integer idInt = Integer.parseInt(id);
         Query q = getEm().createQuery(jpql);
-       // q.setParameter("id", idInt);
+        q.setParameter("id", idInt);
         q.setParameter("name", name);
         q.setParameter("date", date);
         q.executeUpdate();
         
     }
     
-    public void updateAuthorRecords(List<String> colNames, List<Object> colValues, 
-            String whereCol, String operator, Object whereVal) throws ClassNotFoundException, SQLException{
-        
-        String jpql = "";
-       
-    }
+   
     
     public Author getUniqueAuthor(String id)
     throws SQLException, ClassNotFoundException {

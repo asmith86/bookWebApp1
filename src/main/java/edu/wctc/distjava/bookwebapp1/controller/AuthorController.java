@@ -109,14 +109,9 @@ public class AuthorController extends HttpServlet {
                             
 
                         } else {
-                            //  authorService.updateAuthorRecords(authorName, dateAdded);
-                            // Update logic
-//                            authorService.updateAuthorRecords(
-//                                    Arrays.asList("author_name", "date_added"),
-//                                    Arrays.asList(authorName, dateAdded),
-//                                    "author_id",
-//                                    "=",
-//                                    authorId);
+                            //Update logic
+                              authorService.updateAuthorRecords(authorId, authorName, dateAdded);
+                            
                         }
 
                         break;
