@@ -70,13 +70,13 @@ public class AuthorService implements Serializable {
        
     }
     
-    public void updateAuthorRecords(String id, String name, String dateAdded) throws ParseException{
+    public void updateAuthorRecords(String name, String dateAdded) throws ParseException{
         String jpql = "update Author a set a.authorName = :name, a.dateAdded = :date " + 
                 "where a.authorId = :id";
-        Date date = new SimpleDateFormat("dd/MM/YYYY").parse(dateAdded);
-        Integer idInt = Integer.parseInt(id);
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAdded);
+       // Integer idInt = Integer.parseInt(id);
         Query q = getEm().createQuery(jpql);
-        q.setParameter("id", idInt);
+       // q.setParameter("id", idInt);
         q.setParameter("name", name);
         q.setParameter("date", date);
         q.executeUpdate();
@@ -101,32 +101,32 @@ public class AuthorService implements Serializable {
     
     public void addAuthorRecord(String name, String dateAdded) throws ParseException{
         //Cannot insert using jqpl query
-        Date date = new SimpleDateFormat("dd/MM/YYYY").parse(dateAdded);
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateAdded);
         Author author = new Author();
         author.setAuthorName(name);
         author.setDateAdded(date);
         
-        EntityTransaction tx = getEm().getTransaction();
-        tx.begin();
+       
         getEm().persist(author);
-        tx.commit();
+        
+        
+        
+    }
+    
+    public void addAuthorRecord(String name){
+        
+        Author author = new Author();
+        author.setAuthorName(name);
+        
+        
+        getEm().persist(author);
         
         
     }
     
-    public void addAuthorRecord(List<String> colNames, List<Object> colValues)
-            throws SQLException, ClassNotFoundException {
-        
-        //todo
-        
-    }
     
-//    public static void main(String[] args) throws Exception {
-//        AuthorService a = new AuthorService();
-//        
-//        System.out.println(a.getAuthorList());
-//    }
-//    
+    
+    
 }
 
             

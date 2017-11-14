@@ -1,6 +1,7 @@
 package edu.wctc.distjava.bookwebapp1.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Basic;
@@ -36,6 +37,7 @@ public class Author implements Serializable {
     @Column(name = "date_added")
     @Temporal(TemporalType.DATE)
     private Date dateAdded;
+   // private String dateString;
 
     public Author() {
         
@@ -51,6 +53,12 @@ public class Author implements Serializable {
         this.authorId = authorId;
         this.authorName = authorName;
         this.dateAdded = dateAdded;
+    }
+    
+    public String getDateString(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        return sdf.format(dateAdded);
     }
 
     public Integer getAuthorId() {

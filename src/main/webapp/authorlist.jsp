@@ -20,7 +20,7 @@
                 <tr>
                     <td>${a.authorId}</td>
                     <td>${a.authorName}</td>
-                    <td>${a.dateAdded}</td>
+                    <td>${a.getDateString()}</td>
                     <td><input type="checkbox" name="authorId" value="${a.authorId}"></td>
                 </tr>
                 

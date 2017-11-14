@@ -44,11 +44,9 @@ public class AuthorController extends HttpServlet {
 
     public static final String LIST_PAGE = "/authorlist.jsp";
     public static final String ADD_EDIT_PAGE = "/editpage.jsp";
-    
+
     @EJB
     private AuthorService authorService;
-
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,13 +59,12 @@ public class AuthorController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
         String destination = LIST_PAGE; //default
         try {
             String action = request.getParameter(ACTION);
-            
-            
+
 //            AuthorService authorService
 //                    = null;
             List<Author> authorList = null;
@@ -82,7 +79,7 @@ public class AuthorController extends HttpServlet {
                     case ADD_UPDATE_ACTION:
                         String[] authorIds = request.getParameterValues("authorId");
                         if (authorIds == null) {
-                            //Go to edit page  
+                            //Go to create page  
                         } else {
                             //Must be an edit
                             String authorId = authorIds[0];
@@ -92,11 +89,11 @@ public class AuthorController extends HttpServlet {
                         }
                         destination = ADD_EDIT_PAGE;
                         break;
-                    case REMOVE_ACTION: 
+                    case REMOVE_ACTION:
                         String[] ids = request.getParameterValues("authorId");
-                       
+
                         for (String s : ids) {
-                           authorService.deleteAuthorRecord(s);
+                            authorService.deleteAuthorRecord(s);
 
                         }
 
@@ -108,16 +105,11 @@ public class AuthorController extends HttpServlet {
                         String dateAdded = request.getParameter("dateAdded");
 
                         if (authorId == null || authorId.isEmpty()) {
-                            authorService.addAuthorRecord(authorName,dateAdded);
-                            //Add logic
-//                            authorService.addAuthorRecord(Arrays.asList(
-//                                    "author_name", "date_added"),
-//                                    Arrays.asList(
-//                                            authorName, dateAdded));
-
+                            authorService.addAuthorRecord(authorName, dateAdded);
+                            
 
                         } else {
-                            authorService.updateAuthorRecords(authorId, authorName, dateAdded);
+                            //  authorService.updateAuthorRecords(authorName, dateAdded);
                             // Update logic
 //                            authorService.updateAuthorRecords(
 //                                    Arrays.asList("author_name", "date_added"),
@@ -140,7 +132,6 @@ public class AuthorController extends HttpServlet {
                 this.refreshListPage(request, authorService);
 
             }
-            
 
         } catch (Exception e) {
             destination = LIST_PAGE;
@@ -198,7 +189,6 @@ public class AuthorController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        
 
     }
 

@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                     <td>Date Added</td>
-                    <td><input type="text" value="${author.dateAdded}" name="dateAdded"></td>
+                    <td><input type="text" value="${author.getDateString()}" name="dateAdded"></td>
                 </tr>
 
 
