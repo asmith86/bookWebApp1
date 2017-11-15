@@ -31,11 +31,11 @@ import javax.persistence.TypedQuery;
  */
 //Dont declare any methods final in this class! It will render the EJB useless.
 @Stateless
-public class AuthorService implements Serializable {
+public class AuthorServiceOld implements Serializable {
     
     @PersistenceContext(unitName = "book_PU")
     private EntityManager em; //dont refrence this property directly
-    public AuthorService() {
+    public AuthorServiceOld() {
          
     }
 
