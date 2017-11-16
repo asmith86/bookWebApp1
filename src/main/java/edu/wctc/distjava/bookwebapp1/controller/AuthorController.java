@@ -6,6 +6,7 @@
 package edu.wctc.distjava.bookwebapp1.controller;
 
 import edu.wctc.distjava.bookwebapp1.model.Author;
+import edu.wctc.distjava.bookwebapp1.model.AuthorService;
 
 import edu.wctc.distjava.bookwebapp1.model.AuthorServiceOld;
 
@@ -46,7 +47,7 @@ public class AuthorController extends HttpServlet {
     public static final String ADD_EDIT_PAGE = "/editpage.jsp";
 
     @EJB
-    private AuthorServiceOld authorService;
+    private AuthorService authorService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -70,7 +71,7 @@ public class AuthorController extends HttpServlet {
             List<Author> authorList = null;
             Author author = null;
             if (action.equalsIgnoreCase(LIST_ACTION)) {
-                authorList = authorService.getAuthorList();
+                authorList = authorService.findAll();
                 request.setAttribute("authorList", authorList);
 
             } else if (action.equalsIgnoreCase(ADD_EDIT_DELETE_ACTION)) {
@@ -83,7 +84,7 @@ public class AuthorController extends HttpServlet {
                         } else {
                             //Must be an edit
                             String authorId = authorIds[0];
-                            author = authorService.getUniqueAuthor(authorId);
+                            author = authorService.find(authorId);
                             request.setAttribute("author", author);
 
                         }
@@ -105,12 +106,12 @@ public class AuthorController extends HttpServlet {
                         String dateAdded = request.getParameter("dateAdded");
 
                         if (authorId == null || authorId.isEmpty()) {
-                            authorService.addAuthorRecord(authorName, dateAdded);
+                           // authorService.create(authorName, dateAdded);
                             
 
                         } else {
                             //Update logic
-                              authorService.updateAuthorRecords(authorId, authorName, dateAdded);
+                             // authorService.updateAuthorRecords(authorId, authorName, dateAdded);
                             
                         }
 
@@ -137,8 +138,8 @@ public class AuthorController extends HttpServlet {
         view.forward(request, response);
     }
 
-    private void refreshListPage(HttpServletRequest request, AuthorServiceOld authorService) throws SQLException, ClassNotFoundException, Exception {
-        List<Author> authorList = authorService.getAuthorList();
+    private void refreshListPage(HttpServletRequest request, AuthorService authorService) throws SQLException, ClassNotFoundException, Exception {
+        List<Author> authorList = authorService.findAll();
         request.setAttribute("authorList", authorList);
     }
 
