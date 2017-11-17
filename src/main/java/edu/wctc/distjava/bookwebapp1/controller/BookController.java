@@ -24,14 +24,25 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "BookController", urlPatterns = {"/bookController"}) // was modified from book
 public class BookController extends HttpServlet {
+
     public static final String ACTION = "action";
     public static final String LIST_ACTION = "list";
-    
+    public static final String ADD_EDIT_DELETE_ACTION = "addEditDelete";
+    public static final String SUBMIT_ACTION = "submit";
+    public static final String SAVE_ACTION = "save";
+    public static final String CANCEL_ACTION = "cancel";
+    public static final String ADD_ACTION = "Add";
+    public static final String ADD_UPDATE_ACTION = "addUpdate";
+    public static final String REMOVE_ACTION = "Remove";
+    public static final String FIND_ACTION = "find";
+    public static final String UPDATE_ACTION = "Edit";
+
+    public static final String ADD_EDIT_PAGE = "/editbook.jsp";
+
     public static final String LIST_PAGE = "/booklist.jsp";
-    
+
     @EJB
     private BookService bookService;
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,8 +57,8 @@ public class BookController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String destination = LIST_PAGE;
-        try  {
-           String action = request.getParameter(ACTION);
+        try {
+            String action = request.getParameter(ACTION);
 
 //            AuthorServiceOld authorService
 //                    = null;
@@ -57,18 +68,60 @@ public class BookController extends HttpServlet {
                 bookList = bookService.findAll();
                 request.setAttribute("bookList", bookList);
 
+            } else if (action.equalsIgnoreCase(ADD_EDIT_DELETE_ACTION)) {
+                String submit = request.getParameter(SUBMIT_ACTION);
+                switch (submit) {
+                    case ADD_UPDATE_ACTION:
+                        String[] bookIds = request.getParameterValues("bookId");
+                        if (bookIds == null) {
+                            //Go to create page  
+                        } else {
+                            //Must be an edit
+                            String bookId = bookIds[0];
+                            book = bookService.find(bookId);
+                            request.setAttribute("book", book);
+
+                        }
+                        destination = ADD_EDIT_PAGE;
+                        break;
+                    case REMOVE_ACTION:
+                        String[] ids = request.getParameterValues("bookId");
+
+                        for (String s : ids) {
+                            bookService.deleteBook(s);
+
+                        }
+
+                        break;
+
+                    case SAVE_ACTION:
+
+                        String bookId = request.getParameter("bookId");
+                        String title = request.getParameter("title");
+                        String isbn = request.getParameter("isbn");
+                        String authorId = request.getParameter("authorId");
+
+                        bookService.addOrUpdateNewBook(bookId, title, isbn, authorId);
+
+                        break;
+
+                    default:
+                        System.out.println("Debug");
+                }
+                
+                this.refreshListPage(request, bookService);
             }
-            
+
         } catch (Exception e) {
             destination = LIST_PAGE;
             request.setAttribute("errMessage", e.getMessage());
-            
+
         }
-        
+
         RequestDispatcher view = request.getRequestDispatcher(destination);
         view.forward(request, response);
     }
-    
+
     private void refreshListPage(HttpServletRequest request, BookService bookService) throws SQLException, ClassNotFoundException, Exception {
         List<Book> bookList = bookService.findAll();
         request.setAttribute("bookList", bookList);
