@@ -4,6 +4,7 @@
     Author     : alexsmith
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,7 +17,7 @@
         <form method="POST" action="bookController?action=addEditDelete">
             <table>
 
-                <c:choose> <!-- Conditionally display Author ID -->
+                <c:choose> 
                     <c:when test="${not empty book}">
                         <tr>
                             <td>ID</td>
@@ -36,7 +37,12 @@
                 </tr>
                 <tr>
                     <td>Author Id</td>
-                    <td><input type="text" value="${book.authorId.authorId}" name="authorId" readonly/></td>
+                    <td><select name="authorId">
+                            <c:forEach var="a" items="${authorList}">
+                                <option value="${a.authorId}">${a.authorName}</option>
+                            </c:forEach> 
+                    
+                        </select></td>
                 </tr>
 
 

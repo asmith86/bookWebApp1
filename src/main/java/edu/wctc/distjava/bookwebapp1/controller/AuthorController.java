@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -83,8 +84,9 @@ public class AuthorController extends HttpServlet {
                             //Go to create page  
                         } else {
                             //Must be an edit
-                            String authorId = authorIds[0];
-                            author = authorService.find(authorId);
+                           int authorId = Integer.parseInt(authorIds[0]);
+                           author = authorService.find(authorId);
+                           //author = new Author(1,"Bob Steve", new Date());
                             request.setAttribute("author", author);
 
                         }
@@ -105,15 +107,7 @@ public class AuthorController extends HttpServlet {
                         String authorName = request.getParameter("authorName");
                         String dateAdded = request.getParameter("dateAdded");
 
-                        if (authorId == null || authorId.isEmpty()) {
-                           // authorService.create(authorName, dateAdded);
-                            
-
-                        } else {
-                            //Update logic
-                             // authorService.updateAuthorRecords(authorId, authorName, dateAdded);
-                            
-                        }
+                        authorService.addOrUpdateAuthor(authorId, authorName, dateAdded);
 
                         break;
 

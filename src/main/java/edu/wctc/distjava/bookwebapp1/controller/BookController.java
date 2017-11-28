@@ -5,6 +5,8 @@
  */
 package edu.wctc.distjava.bookwebapp1.controller;
 
+import edu.wctc.distjava.bookwebapp1.model.Author;
+import edu.wctc.distjava.bookwebapp1.model.AuthorService;
 import edu.wctc.distjava.bookwebapp1.model.Book;
 import edu.wctc.distjava.bookwebapp1.model.BookService;
 import java.io.IOException;
@@ -43,6 +45,9 @@ public class BookController extends HttpServlet {
 
     @EJB
     private BookService bookService;
+    
+    @EJB
+    private AuthorService authorService;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,10 +83,12 @@ public class BookController extends HttpServlet {
                         } else {
                             //Must be an edit
                             String bookId = bookIds[0];
-                            book = bookService.find(bookId);
+                            book = bookService.find(Integer.parseInt(bookId));
                             request.setAttribute("book", book);
 
                         }
+                        List<Author> authorList = authorService.findAll();
+                        request.setAttribute("authorList", authorList);
                         destination = ADD_EDIT_PAGE;
                         break;
                     case REMOVE_ACTION:
@@ -108,7 +115,7 @@ public class BookController extends HttpServlet {
                     default:
                         System.out.println("Debug");
                 }
-                
+
                 this.refreshListPage(request, bookService);
             }
 
