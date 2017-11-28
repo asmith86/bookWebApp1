@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Add/Edit Authors</h1>
+        <h1>Add/Edit Books</h1>
         <form method="POST" action="bookController?action=addEditDelete">
             <table>
 
