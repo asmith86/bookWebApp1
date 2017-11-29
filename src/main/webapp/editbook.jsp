@@ -39,6 +39,9 @@
                     <td>Author Id</td>
                     <td><select name="authorId">
                             <c:forEach var="a" items="${authorList}">
+                                
+                                    
+                                
                                 <option value="${a.authorId}">${a.authorName}</option>
                             </c:forEach> 
                     
