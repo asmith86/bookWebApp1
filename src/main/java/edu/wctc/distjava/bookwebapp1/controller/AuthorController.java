@@ -19,11 +19,14 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  *
@@ -47,7 +50,7 @@ public class AuthorController extends HttpServlet {
     public static final String LIST_PAGE = "/authorlist.jsp";
     public static final String ADD_EDIT_PAGE = "/editpage.jsp";
 
-    @EJB
+   
     private AuthorService authorService;
 
     /**
@@ -84,8 +87,10 @@ public class AuthorController extends HttpServlet {
                             //Go to create page  
                         } else {
                             //Must be an edit
-                           int authorId = Integer.parseInt(authorIds[0]);
-                           author = authorService.find(authorId);
+                           String authorId = authorIds[0];
+                           //int authorId = Integer.parseInt(authorIds[0]);
+                           author = authorService.findById(authorId);
+                           //author = authorService.findOne(authorId);
                            //author = new Author(1,"Bob Steve", new Date());
                             request.setAttribute("author", author);
 
@@ -179,6 +184,11 @@ public class AuthorController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        ServletContext sctx = getServletContext();
+        
+        WebApplicationContext ctx 
+                = WebApplicationContextUtils.getWebApplicationContext(sctx);
+        authorService = (AuthorService) ctx.getBean("authorService");
 
     }
 

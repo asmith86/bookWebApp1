@@ -70,7 +70,7 @@ public class BookController extends HttpServlet {
             List<Book> bookList = null;
             Book book = null;
             if (action.equalsIgnoreCase(LIST_ACTION)) {
-                bookList = bookService.findAll();
+               // bookList = bookService.findAll();
                 request.setAttribute("bookList", bookList);
 
             } else if (action.equalsIgnoreCase(ADD_EDIT_DELETE_ACTION)) {
@@ -83,7 +83,7 @@ public class BookController extends HttpServlet {
                         } else {
                             //Must be an edit
                             String bookId = bookIds[0];
-                            book = bookService.find(Integer.parseInt(bookId));
+                          //  book = bookService.find(Integer.parseInt(bookId));
                             request.setAttribute("book", book);
 
                         }
@@ -95,7 +95,7 @@ public class BookController extends HttpServlet {
                         String[] ids = request.getParameterValues("bookId");
 
                         for (String s : ids) {
-                            bookService.deleteBook(s);
+                          //  bookService.deleteBook(s);
 
                         }
 
@@ -108,7 +108,7 @@ public class BookController extends HttpServlet {
                         String isbn = request.getParameter("isbn");
                         String authorId = request.getParameter("authorId");
 
-                        bookService.addOrUpdateNewBook(bookId, title, isbn, authorId);
+                      //  bookService.addOrUpdateNewBook(bookId, title, isbn, authorId);
 
                         break;
 
@@ -130,8 +130,8 @@ public class BookController extends HttpServlet {
     }
 
     private void refreshListPage(HttpServletRequest request, BookService bookService) throws SQLException, ClassNotFoundException, Exception {
-        List<Book> bookList = bookService.findAll();
-        request.setAttribute("bookList", bookList);
+     //   List<Book> bookList = bookService.findAll();
+      //  request.setAttribute("bookList", bookList);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -5,33 +5,59 @@
  */
 package edu.wctc.distjava.bookwebapp1.model;
 
+import edu.wctc.distjava.bookwebapp1.repository.AuthorRepository;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author alexsmith
  */
-@Stateless
-public class AuthorService extends AbstractFacade<Author> {
+@Service
+public class AuthorService {
 
-    @PersistenceContext(unitName = "book_PU")
-    private EntityManager em;
+    @Autowired
+    private AuthorRepository authorRepo;
+   
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+   
 
     public AuthorService() {
-        super(Author.class);
+        
     }
+    
+    public List<Author> findAll(){
+        return authorRepo.findAll();
+    }
+    
+    public Author findById(String id){
+       return authorRepo.findOne(Integer.parseInt(id));
+    }
+    
+    public void addAuthor(String name){
+        Date dateAdded = new Date();
+        Author author = new Author();
+        author.setAuthorName(name);
+        author.setDateAdded(dateAdded);
+        author.setBookSet(new HashSet());
+        
+        authorRepo.save(author);
+    }
+    
+    
+    
+    
+    
     
     
     public void addOrUpdateAuthor(String authorId, String name, String dateAdded) throws ParseException {
@@ -55,30 +81,28 @@ public class AuthorService extends AbstractFacade<Author> {
         
         
 
-        getEntityManager().merge(author);
+        authorRepo.save(author);
 
     }
-    
-    public void addNewAuthor(String name, String dateAdded) throws ParseException{
-        Author author = new Author();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = sdf.parse(dateAdded);
+ 
+    //assume date added is not editable
+    public void updateAuthor(String id, String name){
+        Author author = findById(id);
         author.setAuthorName(name);
-        author.setDateAdded(date);
-        this.create(author);
-        
+        authorRepo.save(author);
     }
+    
+    
     
     public void deleteAuthorRecord(String id) throws SQLException, ClassNotFoundException{
         Integer idInt = Integer.parseInt(id);
-        String jpql = "delete from Author a where a.authorId = :id";
-        Query q = getEntityManager().createQuery(jpql);
-        q.setParameter("id", idInt);
-        q.executeUpdate();
-       
         
+        authorRepo.delete(idInt);
+            
        
     }
+    
+    
     
     
     
