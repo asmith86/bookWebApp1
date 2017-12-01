@@ -14,11 +14,14 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  *
@@ -43,10 +46,10 @@ public class BookController extends HttpServlet {
 
     public static final String LIST_PAGE = "/booklist.jsp";
 
-    @EJB
+    
     private BookService bookService;
     
-    @EJB
+   
     private AuthorService authorService;
 
     /**
@@ -70,7 +73,7 @@ public class BookController extends HttpServlet {
             List<Book> bookList = null;
             Book book = null;
             if (action.equalsIgnoreCase(LIST_ACTION)) {
-               // bookList = bookService.findAll();
+                bookList = bookService.findAll();
                 request.setAttribute("bookList", bookList);
 
             } else if (action.equalsIgnoreCase(ADD_EDIT_DELETE_ACTION)) {
@@ -83,7 +86,7 @@ public class BookController extends HttpServlet {
                         } else {
                             //Must be an edit
                             String bookId = bookIds[0];
-                          //  book = bookService.find(Integer.parseInt(bookId));
+                            book = bookService.findById(bookId);
                             request.setAttribute("book", book);
 
                         }
@@ -130,8 +133,8 @@ public class BookController extends HttpServlet {
     }
 
     private void refreshListPage(HttpServletRequest request, BookService bookService) throws SQLException, ClassNotFoundException, Exception {
-     //   List<Book> bookList = bookService.findAll();
-      //  request.setAttribute("bookList", bookList);
+        List<Book> bookList = bookService.findAll();
+        request.setAttribute("bookList", bookList);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -172,5 +175,16 @@ public class BookController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    @Override
+    public void init() throws ServletException {
+        ServletContext sctx = getServletContext();
+        
+        WebApplicationContext ctx 
+                = WebApplicationContextUtils.getWebApplicationContext(sctx);
+        bookService = (BookService) ctx.getBean("bookService");
+        authorService = (AuthorService) ctx.getBean("authorService");
+
+    }
 
 }

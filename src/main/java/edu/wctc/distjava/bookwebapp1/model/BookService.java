@@ -8,6 +8,7 @@ package edu.wctc.distjava.bookwebapp1.model;
 import edu.wctc.distjava.bookwebapp1.repository.AuthorRepository;
 import edu.wctc.distjava.bookwebapp1.repository.BookRepository;
 import java.sql.SQLException;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,6 +32,16 @@ public class BookService {
         
     }
     
+    public List<Book> findAll(){
+        return bookRepo.findAll();
+    }
+    
+    public Book findById(String id){
+       return bookRepo.findOne(Integer.parseInt(id));
+    }
+    
+    
+    
     //authorId refers to an author object
     public void addNewBook(String title, String isbn, String authorId){
         int id = Integer.parseInt(authorId);
@@ -47,30 +58,31 @@ public class BookService {
 
     
 
-//    
-//    public void addOrUpdateNewBook(String bookId, String title, String isbn, String authorId) {
-//
-//        Book book = null;
-//
-//        if (bookId == null || bookId.isEmpty()) {
-//            // new record
-//
-//            book = new Book();
-//
-//        } else {
-//            //updated record
-//            book = new Book(new Integer(bookId));
-//        }
-//
-//        book.setTitle(title);
-//        book.setIsbn(isbn);
-//        Author author = getEntityManager().find(Author.class, new Integer(authorId));
-//        book.setAuthorId(author);
-//
-//        getEntityManager().merge(book);
-//
-//    }
-//    
+    
+    public void addOrUpdateNewBook(String bookId, String title, String isbn, String authorId) {
+
+        Book book = null;
+
+        if (bookId == null || bookId.isEmpty()) {
+            // new record
+
+            book = new Book();
+
+        } else {
+            //updated record
+            book = new Book(new Integer(bookId));
+        }
+
+        book.setTitle(title);
+        book.setIsbn(isbn);
+        Author author = authorRepo.findOne(Integer.parseInt(authorId));
+        //Author author = getEntityManager().find(Author.class, new Integer(authorId));
+        book.setAuthorId(author);
+
+        bookRepo.save(book);
+
+    }
+    
 //    public void addNewBook(String title, String isbn, String authorId){
 //        Book book = new Book();
 //        book.setTitle(title);
@@ -80,17 +92,14 @@ public class BookService {
 //        this.create(book);
 //        
 //    }
-//    
-//    public void deleteBook(String id) throws SQLException, ClassNotFoundException{
-//        Integer idInt = Integer.parseInt(id);
-//        String jpql = "delete from Book b where b.bookId = :id";
-//        Query q = getEntityManager().createQuery(jpql);
-//        q.setParameter("id", idInt);
-//        q.executeUpdate();
-//       
-//        
-//       
-//    }
+    
+    public void deleteBook(String id) throws SQLException, ClassNotFoundException{
+        Integer idInt = Integer.parseInt(id);
+        
+        bookRepo.delete(idInt);
+        
+       
+    }
     
     
 
