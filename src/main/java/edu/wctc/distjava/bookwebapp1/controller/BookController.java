@@ -98,7 +98,7 @@ public class BookController extends HttpServlet {
                         String[] ids = request.getParameterValues("bookId");
 
                         for (String s : ids) {
-                          //  bookService.deleteBook(s);
+                            bookService.deleteBook(s);
 
                         }
 
@@ -111,7 +111,7 @@ public class BookController extends HttpServlet {
                         String isbn = request.getParameter("isbn");
                         String authorId = request.getParameter("authorId");
 
-                      //  bookService.addOrUpdateNewBook(bookId, title, isbn, authorId);
+                        bookService.addOrUpdateNewBook(bookId, title, isbn, authorId);
 
                         break;
 
